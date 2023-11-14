@@ -2,15 +2,15 @@ clear, close all
 clc
 
 
-%% 3.2.2 Forward kinematics
+%% 3.2.2 Forward and inverse kinematics - robot arm
 theta1 = 0;
 theta2 = 0;
 theta3 = 0;
 theta4 = 0;
 
-T01 = [cos(theta1), -sin(theta1)*cos(-pi/2), sin(theta1)*sin(-pi/2), 0.20*cos(theta1);
+T01 = [cos(theta1), -sin(theta1)*cos(-pi/2), sin(theta1)*sin(-pi/2), 0;
        sin(theta1), cos(theta1)*cos(-pi/2), -cos(theta1)*sin(-pi/2), -pi/2*sin(theta1);
-       0, sin(-pi/2), cos(-pi/2), 0;
+       0, sin(-pi/2), cos(-pi/2), 0.2;
        0, 0, 0, 1];
 
 T12 = [cos(theta2), -sin(theta2), 0, 1.59*cos(theta2);
@@ -32,14 +32,14 @@ T_manually = (T01*T12*T23*T34)
 
 %% Demonstrate equivalence of the forward kinematic solution 
 import ETS3.*
-L(1) = Link('revolute', 'd', 0, 'a', 0.2, 'alpha', -pi/2, 'offset', 0);
+L(1) = Link('revolute', 'd', 0.2, 'a', 0, 'alpha', -pi/2, 'offset', 0);
 L(2) = Link('revolute', 'd', 0, 'a', 1.59, 'alpha', 0, 'offset', 0);
 L(3) = Link('revolute', 'd', 0, 'a', 1.59, 'alpha', 0, 'offset', 0);
-L(4) = Link('revolute', 'd', 0, 'a', 1.1, 'alpha', 0, 'offset', 0);
+L(4) = Link('revolute', 'd', 0, 'a', 1.2, 'alpha', 0, 'offset', 0);
 robot = SerialLink(L,'name', 'Forklift Manipulator');
 q = [0 0 0 0];
 
-T_Toolbox = robot.fkine(q); 
+T_Toolbox = robot.fkine(q) 
 
 %% 3.2.2 Develop the inverse kinematics, and demonstrate how it could be used
 mask = [1 1 1 1 0 0];
@@ -74,7 +74,9 @@ robot.plot(Qmatrix, 'trail', 'r');
 
 
 %% 3.4 Differential kinematics
-force = [0 4905 0 0 0 0]; %4905N force applied in the Y-direction when pallet is 500kg
+% Using jacobe to calculate force on each joint
+
+force = [0 4905 0 0 0 0]; %4905N force applied in the Y-direction in end effector frame when pallet is 500kg
 Jacobiforce = robot.jacobe(q1)' * force'; %The q1 position is where the force is the highest
 JacobiForceNewton = Jacobiforce'
 
