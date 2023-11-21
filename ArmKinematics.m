@@ -9,22 +9,22 @@ theta3 = 0;
 theta4 = 0;
 
 T01 = [cos(theta1), -sin(theta1)*cos(-pi/2), sin(theta1)*sin(-pi/2), 0;
-       sin(theta1), cos(theta1)*cos(-pi/2), -cos(theta1)*sin(-pi/2), -pi/2*sin(theta1);
+       sin(theta1), cos(theta1)*cos(-pi/2), -cos(theta1)*sin(-pi/2), 0;
        0, sin(-pi/2), cos(-pi/2), 0.2;
        0, 0, 0, 1];
 
 T12 = [cos(theta2), -sin(theta2), 0, 1.59*cos(theta2);
-       sin(theta2), cos(theta2), 0, 0;
+       sin(theta2), cos(theta2), 0, 1.59*sin(theta2);
        0, 0, 1, 0; 
        0, 0, 0, 1];
 
 T23 = [cos(theta3), -sin(theta3), 0, 1.59*cos(theta3);
-       sin(theta3), cos(theta3), 0, 0;
+       sin(theta3), cos(theta3), 0, 1.59*sin(theta3);
        0, 0, 1, 0;
        0, 0, 0, 1];
 
 T34 = [cos(theta4), -sin(theta4), 0, 1.2*cos(theta4);
-       sin(theta4), cos(theta4), 0, 0;
+       sin(theta4), cos(theta4), 0, 1.2*sin(theta4);
        0, 0, 1, 0;
        0, 0, 0, 1];
 
@@ -47,7 +47,7 @@ mask = [1 1 1 1 0 0];
 q_inverse_kinematics = robot.ikine(T_Toolbox, 'mask', mask)
 
 
-%% 3.3 Trajectory planning
+%% 3.3 Trajectory planning 
 q0 = [deg2rad(0) deg2rad(-86.4) deg2rad(-3.6) deg2rad(154.8)]; %Hvileposisjon
 q1 = [deg2rad(0) deg2rad(-68.4) deg2rad(68.4) deg2rad(0)]; %Plukke opp palle
 q2 = [deg2rad(0) deg2rad(-90.0) deg2rad(0) deg2rad(90)]; %Hvileposisjon med palle
